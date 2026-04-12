@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+.venv/
+venv/
+env/
+
+# Docker build artifacts
+.docker/
+*.tar
+
+# Tool/editor artifacts
+.codex
+.env
+.DS_Store
