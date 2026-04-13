@@ -233,12 +233,15 @@ def main() -> None:
 
     setup_workspace(workspace_path, git_repo_url, git_repo_ref, git_token)
 
+    gateway_allow_all = os.environ.get("GATEWAY_ALLOW_ALL_USERS", "true").strip()
+
     hermes_env_updates = {
         "API_SERVER_ENABLED": "true",
         "API_SERVER_HOST": hermes_api_host,
         "API_SERVER_PORT": str(hermes_api_port),
         "API_SERVER_KEY": hermes_api_key,
         "API_SERVER_MODEL_NAME": "hermes-agent",
+        "GATEWAY_ALLOW_ALL_USERS": gateway_allow_all,
     }
     write_env_file(hermes_home / ".env", hermes_env_updates)
 
