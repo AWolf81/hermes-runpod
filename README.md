@@ -123,7 +123,39 @@ docker run --rm --name hermes-local \
 If you need host daemon permissions, prefix with `sudo docker ...`.
 
 
-### 3b) Safe Defaults (SOUL + Skills)
+### 3b) Workspace / project access
+
+Hermes starts with `WORKSPACE_PATH` as its working directory (default: `/workspace/project`).
+
+**Option A — Git clone on startup** (works on RunPod, no network volume needed):
+
+```bash
+docker run --rm --env-file .env \
+  -e GIT_REPO_URL=https://github.com/you/your-repo \
+  -e GIT_REPO_REF=main \
+  -p 8642:8642 \
+  hermes-runpod:base
+```
+
+Hermes clones the repo into `WORKSPACE_PATH` on boot. Ephemeral — clone repeats each pod start.
+
+**Option B — RunPod Network Volume** (persistent, survives pod restarts):
+
+1. Create a Network Volume in RunPod Console → Storage → Network Volumes
+2. Attach it at pod creation — mounts to `/runpod-volume`
+3. SSH into the pod and clone once: `git clone https://github.com/you/your-repo /runpod-volume/project`
+4. Set env var: `WORKSPACE_PATH=/runpod-volume/project`
+
+**Option C — Local volume mount** (local Docker, `-v` flag required — cannot go in `.env`):
+
+```bash
+docker run --rm --env-file .env \
+  -v /your/local/project:/workspace/project \
+  -p 8642:8642 \
+  hermes-runpod:base
+```
+
+### 3c) Safe Defaults (SOUL + Skills)
 
 This template bootstraps a safe default `SOUL.md` plus a minimal core skill set on startup.
 
